@@ -35,3 +35,4 @@ hs_err_pid*
 .idea/
 Desvelado.iml
 target/
+app.properties
