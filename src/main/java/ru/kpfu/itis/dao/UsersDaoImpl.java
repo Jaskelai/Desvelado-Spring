@@ -13,17 +13,16 @@ import java.util.List;
 public class UsersDaoImpl implements UsersDao {
     private JdbcTemplate jdbcTemplate;
 
-    //language=sql
     private final String SQL_FIND_BY_ID = "SELECT * FROM desvelado.user WHERE id = ?";
-    //language=sql
+
     private final String SQL_UPDATE_BY_ID = "UPDATE desvelado.user SET email = ?, username = ?, " +
             "password = ?, gender = ?, birthday = ? WHERE id = ?";
-    //language=sql
+
     private final String SQL_FIND_ALL = "SELECT * FROM desvelado.user";
-    //language=sql
+
     private final String SQL_INSERT = "INSERT INTO desvelado.user(email, username, password, gender, birthday) VALUES (?,?,?,?,?)";
-    //language=sql
-    private final String SQL_DELETE_BY_ID = "DELETE FROM desvelado.user WHERE id = ?";
+
+    private final String SQL_DELETE_BY_ID = "DELETE FROM desvelado.user WHERE id = :id";
 
     @Autowired
     public UsersDaoImpl(DataSource dataSource) {

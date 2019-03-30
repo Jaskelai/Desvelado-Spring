@@ -22,7 +22,7 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public String newUser(ModelMap map) {
-        userService.saveUser(new User(3, "adasd", "sdasdaasd", "adasdsad", true, new Date()));
+        userService.saveUser(new User("adasd", "sdasdaasd", "adasdsad", true, new Date()));
         return "index";
     }
 }
