@@ -68,4 +68,9 @@ public class UsersDaoImpl implements UsersDao {
     public List<User> findAll() {
         return jdbcTemplate.query(SQL_FIND_ALL, userRowMapper);
     }
+
+    @Override
+    public List<User> findAll(int offser, int limit) {
+        return null;
+    }
 }

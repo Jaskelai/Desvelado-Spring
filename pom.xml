@@ -27,6 +27,7 @@
 
         <!-- Project specific stuff -->
         <hibernate.validator.version>6.0.15.Final</hibernate.validator.version>
+        <hibernate.version>5.2.12.Final</hibernate.version>
         <java.validator.version>2.0.1.Final</java.validator.version>
 
         <!-- Other stuff dependencies -->
@@ -52,6 +53,19 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+            <type>jar</type>
+        </dependency>
+
         <!-- JSR-303 Validation -->
         <dependency>
             <groupId>javax.validation</groupId>
@@ -67,6 +81,19 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.2</version>
@@ -78,11 +105,11 @@
             <version>4.3.16.RELEASE</version>
         </dependency>
 
-        <!-- Freemarker -->
+        <!-- Jstl -->
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.28</version>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
 
         <!-- Thanks to bad dependency requirements Jackson must be included explicitly. -->

@@ -1,16 +1,34 @@
 package ru.kpfu.itis.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "desvelado.users")
 public class User {
-    private Integer id;
-    private String email;
-    private String username;
-    private String password;
-    private boolean gender;
-    private Date birthday;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    private Integer id;
+
+    @Size(min = 1, max = 500)
+    @Column
+    private String email;
+
+    @Size(min = 1, max = 500)
+    @Column
+    private String username;
+
+    @Size(min = 1, max = 500)
+    @Column
+    private String password;
+
+    private boolean gender;
+
+    private Date birthday;
 
     public User(Integer id, String email, String username, String password, boolean gender, Date birthday) {
         this.id = id;
@@ -27,6 +45,9 @@ public class User {
         this.password = password;
         this.gender = gender;
         this.birthday = birthday;
+    }
+
+    public User() {
     }
 
     public Integer getId() {

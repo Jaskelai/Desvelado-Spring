@@ -1,0 +1,27 @@
+.navbar {
+    font-family: 'Oxygen', sans-serif;
+    background-color: #000000;
+    overflow: auto;
+}
+
+.navbar-brand {
+    font-size: 2em;
+}
+
+.navbar-dark {
+    background-color: #000000;
+}
+
+.btn-custom:hover {
+    background-color: #ff0000;
+}
+
+.btn-custom {
+    background-color: #000000;
+}
+
+.nav-item {
+    margin-top: 6px;
+    margin-left: 5px;
+    font-size: 1.1em;
+}
