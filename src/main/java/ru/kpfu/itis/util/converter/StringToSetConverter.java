@@ -9,10 +9,12 @@ import java.util.Set;
 public class StringToSetConverter implements Converter<String, Set<LanguagesEleven>> {
     @Override
     public Set<LanguagesEleven> convert(String s) {
+        String result = s.replace("[","").replace("]","");
+        String[] values = result.split(",");
         Set<LanguagesEleven> set = new HashSet();
-        LanguagesEleven language = new LanguagesEleven();
-        language.setLanguage(s);
-        set.add(language);
+        for  (String value : values) {
+            set.add(new LanguagesEleven(value));
+        }
         return set;
     }
 }

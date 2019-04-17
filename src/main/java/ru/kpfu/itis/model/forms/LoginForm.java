@@ -1,4 +1,4 @@
-package ru.kpfu.itis.model;
+package ru.kpfu.itis.model.forms;
 
 import java.util.Objects;
 

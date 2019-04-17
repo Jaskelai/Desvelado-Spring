@@ -18,6 +18,10 @@ public class LanguagesEleven {
     @ManyToMany(mappedBy = "languages")
     public Set<UsersEleven> users;
 
+    public LanguagesEleven(String language) {
+        this.language = language;
+    }
+
     public Integer getId() {
         return id;
     }

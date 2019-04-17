@@ -9,29 +9,25 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriComponentsBuilder;
-import ru.kpfu.itis.model.LoginForm;
+import ru.kpfu.itis.model.forms.LoginForm;
 import ru.kpfu.itis.model.User;
-import ru.kpfu.itis.repository.UserAuthorityRepository;
 import ru.kpfu.itis.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
 public class SecurityController {
     private UserService userService;
-    private UserAuthorityRepository userAuthorityRepository;
 
     @Autowired
-    public SecurityController(UserService userService, UserAuthorityRepository userAuthorityRepository) {
+    public SecurityController(UserService userService) {
         this.userService = userService;
-        this.userAuthorityRepository = userAuthorityRepository;
     }
 
     protected String showRegistrationForm(ModelMap map) {
-        map.put("userAuthorities", userAuthorityRepository.findAll());
         return "registration";
     }
 
@@ -55,7 +51,7 @@ public class SecurityController {
                 userService.saveUser(user);
                 redirectAttributes.addFlashAttribute("message", "You has been registered successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");
-                return "redirect:" + UriComponentsBuilder.fromPath("/login").build();
+                return "redirect:" + MvcUriComponentsBuilder.fromMappingName("SC#login").build();
             } catch (DuplicateKeyException ex) {
                 result.rejectValue("username", "entry.duplicate", "There is account with such email already.");
             }
@@ -67,8 +63,10 @@ public class SecurityController {
 
     @RequestMapping(value = "/login")
     @PreAuthorize("isAnonymous()")
-    public String login(@RequestParam(required = false) String error, @ModelAttribute("loginForm") LoginForm loginForm, BindingResult result, ModelMap map) {
-        map.put("error", error);
+    public String login(HttpServletRequest req, @ModelAttribute("loginForm") LoginForm loginForm, BindingResult result, ModelMap map) {
+        if (req.getParameterMap().containsKey("error")) {
+            map.addAttribute("error", "Wrong email or password!");
+        }
         return "login";
     }
 }

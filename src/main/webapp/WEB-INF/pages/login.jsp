@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="inputTag" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +15,6 @@
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="<c:url value = "/assets/scripts/jquery.js"/>"></script>
     <script src="<c:url value="/assets/scripts/bootstrap.min.js"/>"></script>
-    <script src="<c:url value="/assets/scripts/login.js"/>"></script>
 </head>
 <body>
 <div id="navbar">
@@ -25,16 +25,17 @@
         <h1>Login:</h1>
         <div class="main-agileinfo">
             <div class="agileits-top">
-                <form id="form" method="post">
-                    <inputTag:inputTextField textLabel="Enter your email:" idField="emailField" typeField="text"
-                                             nameField="email" classField="text" placeholderField="Enter your email"/>
+                <form:form method="post" modelAttribute="loginForm">
+                    <inputTag:inputTextField textLabel="Enter your username:" idField="emailField" typeField="text"
+                                             nameField="username" classField="text"
+                                             placeholderField="Enter your username"/>
                     <inputTag:inputTextField textLabel="Enter your password:" idField="passField" typeField="password"
                                              nameField="password" classField="text"
                                              placeholderField="Enter your password"/>
                     <inputTag:inputCB nameField="rememberme" idCB="remembermeField" valueField="Remember me?"/>
                     <div id="error"></div>
                     <input type="submit" value="SIGNIN" id="btnSubmit">
-                </form>
+                </form:form>
                 <p>Don't have an Account? <a href="<c:url value="/registration"/>"> Register Now!</a></p>
             </div>
         </div>

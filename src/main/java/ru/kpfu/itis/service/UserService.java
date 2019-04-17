@@ -4,22 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.kpfu.itis.model.enums.StateEnum;
 import ru.kpfu.itis.model.User;
+import ru.kpfu.itis.model.enums.UserRoleEnum;
 import ru.kpfu.itis.model.UsersEleven;
-import ru.kpfu.itis.repository.UserAuthorityRepository;
+import ru.kpfu.itis.repository.UserElevenRepository;
 import ru.kpfu.itis.repository.UserRepository;
 
 @Service
 public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private UserAuthorityRepository userAuthorityRepository;
+    private UserElevenRepository userElevenRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserAuthorityRepository userAuthorityRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserElevenRepository userElevenRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.userAuthorityRepository = userAuthorityRepository;
+        this.userElevenRepository = userElevenRepository;
     }
 
 
@@ -30,13 +32,17 @@ public class UserService {
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new DuplicateKeyException("User with this email already exist");
         }
-        user.addAuthority(userAuthorityRepository.findByAuthority("ROLE_USER"));
+        user.setState(StateEnum.ACTIVE);
+        user.setUserRole(UserRoleEnum.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRepeatPassword(user.getPassword());
         userRepository.save(user);
     }
 
     public void saveUserEleven(UsersEleven user) {
+    }
 
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

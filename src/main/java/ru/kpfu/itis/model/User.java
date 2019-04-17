@@ -2,7 +2,10 @@ package ru.kpfu.itis.model;
 
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kpfu.itis.model.enums.StateEnum;
+import ru.kpfu.itis.model.enums.UserRoleEnum;
 import ru.kpfu.itis.util.FieldMatch;
 
 import javax.persistence.*;
@@ -15,7 +18,7 @@ import java.util.*;
         @FieldMatch(first = "password", second = "passwordRepeat", message = "The password fields must match")
 })
 @Entity
-@Table(name = "desvelado.users")
+@Table(name = "desvelado.user")
 public class User implements CredentialsContainer, UserDetails {
 
     @Id
@@ -33,12 +36,13 @@ public class User implements CredentialsContainer, UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Size(min = 1, max = 500)
     @Column
+    @Size(min = 6, max = 255)
     private String password;
 
     @Column
     @Transient
+    @Size(min = 6, max = 255)
     private String repeatPassword;
 
     @Column
@@ -47,13 +51,13 @@ public class User implements CredentialsContainer, UserDetails {
     @Column
     private Date birthday;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinTable(
-            name = "desvelado.user_user_role",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "user_role")
-    )
-    private Set<UserAuthority> authorities = new HashSet<>();
+    @Enumerated(value = EnumType.STRING)
+    @Column
+    private UserRoleEnum userRole;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column
+    private StateEnum state;
 
     public User(Integer id, String email, String username, String password, String repeatPassword, boolean gender, Date birthday) {
         this.id = id;
@@ -92,32 +96,9 @@ public class User implements CredentialsContainer, UserDetails {
         this.email = email;
     }
 
+    @Override
     public String getUsername() {
         return username;
-    }
-
-    public void addAuthority(UserAuthority authority) {
-        this.authorities.add(authority);
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
     public void setUsername(String username) {
@@ -125,10 +106,6 @@ public class User implements CredentialsContainer, UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -161,6 +138,22 @@ public class User implements CredentialsContainer, UserDetails {
         this.birthday = birthday;
     }
 
+    public UserRoleEnum getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRoleEnum userRole) {
+        this.userRole = userRole;
+    }
+
+    public StateEnum getState() {
+        return state;
+    }
+
+    public void setState(StateEnum state) {
+        this.state = state;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -172,12 +165,14 @@ public class User implements CredentialsContainer, UserDetails {
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(repeatPassword, user.repeatPassword) &&
-                Objects.equals(birthday, user.birthday);
+                Objects.equals(birthday, user.birthday) &&
+                userRole == user.userRole &&
+                state == user.state;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, username, password, repeatPassword, gender, birthday);
+        return Objects.hash(id, email, username, password, repeatPassword, gender, birthday, userRole, state);
     }
 
     @Override
@@ -190,7 +185,36 @@ public class User implements CredentialsContainer, UserDetails {
                 ", repeatPassword='" + repeatPassword + '\'' +
                 ", gender=" + gender +
                 ", birthday=" + birthday +
+                ", userRole=" + userRole +
+                ", state=" + state +
                 '}';
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return state.name().equals(StateEnum.ACTIVE.toString());
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !state.name().equals(StateEnum.BANNED.toString());
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return state.name().equals(StateEnum.ACTIVE.toString());
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String userRole = getUserRole().name();
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole);
+        return Collections.singletonList(authority);
     }
 
     @Override
