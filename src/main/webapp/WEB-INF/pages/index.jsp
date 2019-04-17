@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="<c:url value="/assets/css/navbar.css"/>">
     <link rel="stylesheet" href="<c:url value="/assets/css/home_main.css"/>">
     <link rel="stylesheet" href="<c:url value="/assets/css/footer.css"/>">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    <link rel="style sheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="<c:url value = "/assets/scripts/jquery.js"/>"></script>
     <script src="<c:url value="/assets/scripts/bootstrap.min.js"/>"></script>

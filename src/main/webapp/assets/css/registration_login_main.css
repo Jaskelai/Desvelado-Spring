@@ -791,9 +791,14 @@ input.checkbox:checked:after {
     color: #000000;
 }
 
-#error {
+.errorResult {
     color: #ff0000;
     text-align: center;
+}
+
+#errorId {
+    text-align: center;
+    margin-top: 16px;
 }
 
 .background-custom {

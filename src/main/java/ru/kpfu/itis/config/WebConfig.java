@@ -10,16 +10,17 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import ru.kpfu.itis.util.converter.GenderStringToBooleanConverter;
+import ru.kpfu.itis.util.converter.StringToSetConverter;
 
 @Configuration
-@ComponentScan(basePackages = {"ru.kpfu.itis.controller", "ru.kpfu.itis.model",
-        "ru.kpfu.itis.service"})
+@ComponentScan(basePackages = {"ru.kpfu.itis.controller", "ru.kpfu.itis.service"})
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/jsp/pages/");
+        resolver.setPrefix("/WEB-INF/pages/");
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);
         resolver.setRedirectContextRelative(false);
@@ -28,8 +29,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/assets/css/**").addResourceLocations("assets/css/");
-        registry.addResourceHandler("/assets/img/**").addResourceLocations("assets/img/");
+        registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new GenderStringToBooleanConverter());
+        registry.addConverter(new StringToSetConverter());
     }
 
 }
