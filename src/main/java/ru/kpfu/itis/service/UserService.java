@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.kpfu.itis.model.enums.StateEnum;
 import ru.kpfu.itis.model.User;
 import ru.kpfu.itis.model.enums.UserRoleEnum;
-import ru.kpfu.itis.model.UsersEleven;
-import ru.kpfu.itis.repository.UserElevenRepository;
+import ru.kpfu.itis.model.forms.LoginForm;
 import ru.kpfu.itis.repository.UserRepository;
 
 @Service
@@ -44,5 +43,17 @@ public class UserService {
 
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public void addToken(LoginForm loginForm, String token) {
+
+    }
+
+    public void checkToken(String token, LoginForm user) {
+
+    }
+
+    public LoginForm findUserByToken(String token) {
+        return new LoginForm();
     }
 }

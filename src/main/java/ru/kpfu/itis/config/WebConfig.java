@@ -7,17 +7,18 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import ru.kpfu.itis.service.UserDetailsServiceImpl;
 import ru.kpfu.itis.service.UserService;
+import ru.kpfu.itis.util.TokenInterceptor;
 import ru.kpfu.itis.util.converter.GenderStringToBooleanConverter;
-import ru.kpfu.itis.util.converter.StringToSetConverter;
 
 @Configuration
-@ComponentScan(basePackages = {"ru.kpfu.itis.controller", "ru.kpfu.itis.service"})
+@ComponentScan(basePackages = {"ru.kpfu.itis.controller", "ru.kpfu.itis.service", "ru.kpfu.itis.util"})
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     @Bean
@@ -44,6 +45,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public UserDetailsService userDetailsService(UserService userService){
         return new UserDetailsServiceImpl(userService);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new TokenInterceptor());
     }
 
 }

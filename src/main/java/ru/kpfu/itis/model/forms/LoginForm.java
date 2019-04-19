@@ -6,6 +6,12 @@ public class LoginForm {
 
     private String username;
     private String password;
+    private Boolean rememberme;
+    private String token;
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getUsername() {
         return username;
@@ -21,6 +27,14 @@ public class LoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getRememberme() {
+        return rememberme;
+    }
+
+    public void setRememberme(Boolean rememberme) {
+        this.rememberme = rememberme;
     }
 
     @Override

@@ -33,7 +33,11 @@
                                              nameField="password" classField="text"
                                              placeholderField="Enter your password"/>
                     <inputTag:inputCB nameField="rememberme" idCB="remembermeField" valueField="Remember me?"/>
-                    <div id="error"></div>
+                    <div id="errorId">
+                        <span class="errorResult">
+                            <c:out value="${errorLogin}"/>
+                        </span>
+                    </div>
                     <input type="submit" value="SIGNIN" id="btnSubmit">
                 </form:form>
                 <p>Don't have an Account? <a href="<c:url value="/registration"/>"> Register Now!</a></p>

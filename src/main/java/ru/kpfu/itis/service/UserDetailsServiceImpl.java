@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.kpfu.itis.model.forms.LoginForm;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -18,5 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userService.findUserByUsername(s);
+    }
+
+    public void addToken(LoginForm loginForm, String token) {
+        userService.addToken(loginForm,token);
     }
 }

@@ -1,13 +1,13 @@
 package ru.kpfu.itis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import ru.kpfu.itis.model.UsersEleven;
 import ru.kpfu.itis.service.UserService;
 
 @Controller
@@ -30,15 +30,9 @@ public class BaseController {
         return "redirect:" + MvcUriComponentsBuilder.fromMappingName("BC#home").build();
     }
 
-    @RequestMapping(value = "/usersEleven", method = RequestMethod.GET)
-    public String usersEleven(ModelMap map) {
-        map.put("usersEleven", new UsersEleven());
-        return "usersEleven";
-    }
-
-    @RequestMapping(value = "/usersEleven", method = RequestMethod.POST)
-    public String usersElevenPost(@ModelAttribute("usersEleven") UsersEleven usersEleven, ModelMap map) {
-        userService.saveUserEleven(usersEleven);
-        return "usersEleven";
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @PreAuthorize("isAuthenticated()")
+    public String profile() {
+        return "profile";
     }
 }

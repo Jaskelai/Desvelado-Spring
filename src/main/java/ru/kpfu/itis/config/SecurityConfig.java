@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import ru.kpfu.itis.util.RememberMeAuthProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -21,7 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -40,7 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
+                .formLogin().defaultSuccessUrl("/profile")
+                .and()
                 .csrf();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder builder) {
+        builder.authenticationProvider(new RememberMeAuthProvider());
     }
 
     @Bean
