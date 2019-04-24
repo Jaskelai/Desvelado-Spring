@@ -1,33 +1,4 @@
 jQuery(function () {
-    $("#btnUpload").on('click', function (e) {
-        e.preventDefault();
-        var link = $('#linkInput').val();
-        var header = $('#headerInput').val();
-        var description = $('#descriptionInput').val();
-        var dataFields = {
-            "link": link,
-            "header": header,
-            "description": description
-        };
-        $.ajax({
-            type: 'Post',
-            url: 'addcall',
-            data: dataFields,
-            success: function (result) {
-                if (!result.hasOwnProperty("errorUpload")) {
-                    $('#modalUpload').modal('hide');
-                    link.value = '';
-                    header.value = '';
-                    description.value = '';
-                } else {
-                    $('#error').text(result.errorUpload);
-                }
-            },
-            error: function (result) {
-                alert("Something went wrong with server...");
-            }
-        })
-    });
     $(".toggler").on('click', function (e) {
         e.preventDefault();
         var idLink = e.target.id;
@@ -44,20 +15,20 @@ jQuery(function () {
             likesElement.innerHTML = '';
             likesElement.innerHTML = likes - 1;
         }
-        var dataFields = {
-            "isLiked": isLiked,
-            "idLink": idLink
-        };
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var dataFields = "isLiked=" + isLiked + "&idLink=" + idLink + "&info=" + isLiked.toString() + "&_csrf=" + csrfToken;
         $.ajax({
-            type: 'Post',
-            url: 'likeserv',
+            type: "POST",
+            url: "like",
             data: dataFields,
-            success: function (result) {
-
-
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, csrfToken);
             },
+            success: function (result) {
+            }
+            ,
             error: function (result) {
-                alert("Something went wrong with server...");
             }
         })
     });

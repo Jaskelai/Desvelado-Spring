@@ -5,9 +5,10 @@
 <%@ attribute name="like" required="true" type="java.lang.Boolean" description="Date of post for video" %>
 <%@ attribute name="username" required="true" type="java.lang.String" description="Owner of video" %>
 <%@ attribute name="likesCount" required="true" type="java.lang.Integer" description="Count of like" %>
-<%@ taglib prefix="inputTag" tagdir="/WEB-INF/jsp/tags" %>
+<%@ taglib prefix="inputTag" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="/WEB-INF/jsp/tags/date.tld" prefix="m" %>
+<%@ taglib uri="/WEB-INF/date.tld" prefix="m" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 
 <div class="col-12 col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-2 video-preview col-sm-offset-1">
@@ -36,20 +37,18 @@
     <div class="video-container">
         <div class="post-module">
             <div class="thumbnail">
-                <c:choose>
-                    <c:when test='${sessionScope.username != null}'>
-                        <div class="likeCircle">
-                            <c:choose>
-                                <c:when test='${like}'>
-                                    <a class="likeImg"><i class="fas toggler fa-heart fa-2x" id="${id}"></i></a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a class="likeImg"><i class="far toggler fa-heart fa-2x" id="${id}"></i></a>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                    </c:when>
-                </c:choose>
+                <security:authorize access="isAuthenticated()">
+                    <div class="likeCircle">
+                        <c:choose>
+                            <c:when test='${like}'>
+                                <a class="likeImg"><i class="fas toggler fa-heart fa-2x" id="${id}"></i></a>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="likeImg"><i class="far toggler fa-heart fa-2x" id="${id}"></i></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </security:authorize>
                 <img src="https://img.youtube.com/vi/${id}/0.jpg" data-toggle="modal" data-target="#${id}1"/>
             </div>
             <div class="post-content">
@@ -60,8 +59,10 @@
                     <div class="row row-meta">
                         <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-"></i><m:dateNumber
                                 date="${datePost}"/></span></div>
-                        <a class="num-likes" id="${id}likes">${likesCount}</a>
-                        <a class="heartImg"><i class="fas fa-heart fa-xs"></i></a>
+                        <div id="rowLikes">
+                            <a class="num-likes" id="${id}likes">${likesCount}</a>
+                            <a class="heartImg"><i class="fas fa-heart fa-xs"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>

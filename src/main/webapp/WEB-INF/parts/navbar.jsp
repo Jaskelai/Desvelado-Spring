@@ -19,6 +19,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" id="btnAbout" href="#About">About</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/share"/>'>Share</a>
+            </li>
         </ul>
         <ul class="navbar-nav">
             <security:authorize access="isAnonymous()">

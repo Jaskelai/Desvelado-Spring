@@ -3,9 +3,11 @@
 <%@ attribute name="typeField" required="true" type="java.lang.String" description="Type for input" %>
 <%@ attribute name="nameField" required="true" type="java.lang.String" description="Name for input" %>
 <%@ attribute name="placeholderField" required="false" type="java.lang.String" description="Placeholder for input" %>
-<%@ attribute name="classField" required="true" type="java.lang.String" description="Classes for input" %>/
+<%@ attribute name="classField" required="true" type="java.lang.String" description="Classes for input" %>
+/
 
 <div class="form-group">
     <label for="${idField}" class="text label">${textLabel}</label>
-    <input class="${classField}" type="${typeField}" name="${nameField}" id="${idField}" placeholder="${placeholderField}" required>
+    <input class="${classField}" type="${typeField}" name="${nameField}" id="${idField}"
+           placeholder="${placeholderField}" required>
 </div>

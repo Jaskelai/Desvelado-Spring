@@ -15,20 +15,20 @@ jQuery(function () {
             likesElement.innerHTML = '';
             likesElement.innerHTML = likes - 1;
         }
-        var dataFields = {
-            "isLiked": isLiked,
-            "idLink": idLink
-        };
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var dataFields = "isLiked=" + isLiked + "&idLink=" + idLink + "&info=" + isLiked.toString() + "&_csrf=" + csrfToken;
         $.ajax({
-            type: 'Post',
-            url: 'likeserv',
+            type: "POST",
+            url: "like",
             data: dataFields,
-            success: function (result) {
-
-
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, csrfToken);
             },
+            success: function (result) {
+            }
+            ,
             error: function (result) {
-                alert("Something went wrong with server...");
             }
         })
     });

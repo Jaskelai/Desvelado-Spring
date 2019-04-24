@@ -4,6 +4,7 @@ import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import ru.kpfu.itis.model.enums.StateEnum;
 import ru.kpfu.itis.model.enums.UserRoleEnum;
 import ru.kpfu.itis.util.FieldMatch;
@@ -36,45 +37,43 @@ public class User implements CredentialsContainer, UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column
-    @Size(min = 6, max = 255)
+    @Size(min = 6, max = 255, message = "Wrong password's size")
     private String password;
 
-    @Column
     @Transient
     @Size(min = 6, max = 255)
     private String repeatPassword;
 
-    @Column
     private boolean gender;
 
-    @Column
-    private Date birthday;
+    @Column(name = "birthday")
+    private Date bDay;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Video> videos;
 
     @Enumerated(value = EnumType.STRING)
-    @Column
     private UserRoleEnum userRole;
 
     @Enumerated(value = EnumType.STRING)
-    @Column
     private StateEnum state;
 
-    public User(Integer id, String email, String username, String password, String repeatPassword, boolean gender, Date birthday) {
+    public User(Integer id, String email, String username, String password, String repeatPassword, boolean gender, Date bDay) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.password = password;
         this.repeatPassword = repeatPassword;
         this.gender = gender;
-        this.birthday = birthday;
+        this.bDay = bDay;
     }
 
-    public User(String email, String username, String password, boolean gender, Date birthday) {
+    public User(String email, String username, String password, boolean gender, Date bDay) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.gender = gender;
-        this.birthday = birthday;
+        this.bDay = bDay;
     }
 
     public User() {
@@ -130,12 +129,12 @@ public class User implements CredentialsContainer, UserDetails {
         this.gender = gender;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public Date getBDay() {
+        return bDay;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setBDay(Date bDay) {
+        this.bDay = bDay;
     }
 
     public UserRoleEnum getUserRole() {
@@ -165,14 +164,22 @@ public class User implements CredentialsContainer, UserDetails {
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(repeatPassword, user.repeatPassword) &&
-                Objects.equals(birthday, user.birthday) &&
+                Objects.equals(bDay, user.bDay) &&
                 userRole == user.userRole &&
                 state == user.state;
     }
 
+    public Set<Video> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(Set<Video> videos) {
+        this.videos = videos;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, username, password, repeatPassword, gender, birthday, userRole, state);
+        return Objects.hash(id, email, username, password, repeatPassword, gender, bDay, userRole, state);
     }
 
     @Override
@@ -184,7 +191,7 @@ public class User implements CredentialsContainer, UserDetails {
                 ", password='" + password + '\'' +
                 ", repeatPassword='" + repeatPassword + '\'' +
                 ", gender=" + gender +
-                ", birthday=" + birthday +
+                ", birthday=" + bDay +
                 ", userRole=" + userRole +
                 ", state=" + state +
                 '}';

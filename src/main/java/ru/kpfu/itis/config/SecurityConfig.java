@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ru.kpfu.itis.util.RememberMeAuthProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -43,12 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().defaultSuccessUrl("/profile")
                 .and()
-                .csrf();
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder builder) {
-        builder.authenticationProvider(new RememberMeAuthProvider());
+                .csrf()
+                .and()
+                .rememberMe().rememberMeParameter("rememberme").key("rem-me-key")
+                .tokenValiditySeconds(1209600).rememberMeCookieName("rem-cookie");
     }
 
     @Bean

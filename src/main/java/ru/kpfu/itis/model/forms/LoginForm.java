@@ -7,11 +7,6 @@ public class LoginForm {
     private String username;
     private String password;
     private Boolean rememberme;
-    private String token;
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public String getUsername() {
         return username;
