@@ -1,9 +1,8 @@
 package ru.kpfu.itis.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.aop.interceptor.PerformanceMonitorInterceptor;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -12,6 +11,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
@@ -22,6 +22,8 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories("ru.kpfu.itis.repository")
 @PropertySource("classpath:app.properties")
+@ComponentScan(basePackages = "ru.kpfu.itis.aspect")
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class RootConfig {
 
     @Resource

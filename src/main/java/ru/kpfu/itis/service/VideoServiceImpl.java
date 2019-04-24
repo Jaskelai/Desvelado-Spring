@@ -2,6 +2,7 @@ package ru.kpfu.itis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.kpfu.itis.aspect.MyAnnotation;
 import ru.kpfu.itis.model.Like;
 import ru.kpfu.itis.model.User;
 import ru.kpfu.itis.model.Video;
@@ -79,6 +80,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @MyAnnotation
     public List<Video> getOwnedVideos(String username) {
         User user = userService.findUserByUsername(username);
         return new ArrayList<>(user.getVideos()).stream()

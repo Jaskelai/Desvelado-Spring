@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.kpfu.itis.aspect.MyAnnotation;
 import ru.kpfu.itis.model.Video;
 import ru.kpfu.itis.model.enums.StateEnum;
 import ru.kpfu.itis.model.User;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @MyAnnotation
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
