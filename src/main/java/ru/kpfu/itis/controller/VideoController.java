@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.kpfu.itis.model.Video;
+import ru.kpfu.itis.service.UserService;
 import ru.kpfu.itis.service.VideoService;
 
 import javax.validation.Valid;
@@ -18,10 +20,12 @@ import javax.validation.Valid;
 @RequestMapping("/videos")
 public class VideoController {
     private VideoService videoService;
+    private UserService userService;
 
     @Autowired
-    public VideoController(VideoService videoService) {
+    public VideoController(VideoService videoService, UserService userService) {
         this.videoService = videoService;
+        this.userService = userService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -46,5 +50,14 @@ public class VideoController {
             videoService.saveVideo(video, auth.getName());
         }
         return "redirect:" + MvcUriComponentsBuilder.fromMappingName("VC#videos").build();
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public String videoDelete(
+            @PathVariable String id,
+            Authentication auth
+    ) {
+        videoService.deleteVideo(auth.getName(),id);
+        return "redirect:" + MvcUriComponentsBuilder.fromMappingName("BC#home").build();
     }
 }

@@ -12,7 +12,6 @@ import java.io.IOException;
 @Repository
 public class ShareRepository {
     private OkHttpClient okHttpClient;
-    private final  String REQ_VALUE = "255a916c854e7a4bfb575bdef84374270e0956ae8f75aff5a97a7750caa78998eb49393931ec592831525";
 
     @Autowired
     public ShareRepository(OkHttpClient okHttpClient) {
@@ -46,7 +45,8 @@ public class ShareRepository {
             Response response = okHttpClient.newCall(request).execute();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(token);
         }
     }
+
+    private final  String REQ_VALUE = "394f9b0dfbc6ecee16ec4ce9b51fa0ebdc145e3be05bc8730772245b8f258096c401ed735040a897212de";
 }

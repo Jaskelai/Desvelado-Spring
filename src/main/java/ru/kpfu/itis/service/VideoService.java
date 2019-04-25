@@ -17,4 +17,6 @@ public interface VideoService {
     Video findVideoByYoutubeId(String id);
 
     List<Video> getOwnedVideos(String username);
+
+    void deleteVideo(String username, String id);
 }

@@ -1,11 +1,13 @@
 package ru.kpfu.itis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aspect.MyAnnotation;
 import ru.kpfu.itis.model.Like;
 import ru.kpfu.itis.model.User;
 import ru.kpfu.itis.model.Video;
+import ru.kpfu.itis.model.enums.UserRoleEnum;
 import ru.kpfu.itis.repository.LikeRepository;
 import ru.kpfu.itis.repository.VideoRepository;
 
@@ -95,5 +97,15 @@ public class VideoServiceImpl implements VideoService {
             return matcher.group();
         }
         return null;
+    }
+
+    @Override
+    public void deleteVideo(String username, String id) {
+        User user = userService.findUserByUsername(username);
+        if (user.getUserRole().equals(UserRoleEnum.ADMIN)) {
+            videoRepository.delete(videoRepository.findVideoByYoutubeId(id));
+        } else {
+            throw new AccessDeniedException("YOU ARE NOT ADMIN");
+        }
     }
 }
